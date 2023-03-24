@@ -1,6 +1,17 @@
-# lifty
-A elevator written in Java!
+# Lifty
+A Python package that impliments a elevator.
 
+## Instructions
+
+### Install:
+```
+pip install lifty
+```
+
+### Example use:
+```
+import lifty
+```
 
 ### Features to implement:
 * [ ] Class to contain sensor
