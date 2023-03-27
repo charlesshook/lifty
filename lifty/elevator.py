@@ -12,7 +12,7 @@ class Elevator:
         self.__floors = []
 
     def __str__(self):
-        return f'Elevator(Current floor: {self.__current_floor})'
+        return f'Elevator(Current floor: {self.__current_floor}, Elevator door status: {self.__elevator_door_status}, Elevator status: {self.__elevator_status})'
 
     def get_weight_capacity(self) -> int:
         return self.__weight_capacity
@@ -31,16 +31,9 @@ class Elevator:
     
     def get_status(self) -> status.Elevator:
         return self.__elevator_status
-    
-    def run(self) -> None:
-        if len(self.__floors) is not 0:
-            if self.__current_floor is self.__floors[len(self.__floors -1)]:
-                self.__current_direction = status.Elevator.MOVING_DOWN
-            elif self.__current_floor is self.__floors[0]:
-                self.__current_direction = status.Elevator.MOVING_UP
 
     def select_floor(self, floor_number: int) -> None:
-        self.__floors.insert(floor_number, floor_number)
+        self.__floors.append(floor_number)
 
     def emergency_stop(self) -> None:
         self.__elevator_status = status.Elevator.STOPPING
@@ -51,9 +44,34 @@ class Elevator:
         self.__elevator_door_status = status.Door.CLOSED
 
     def open_doors(self) -> None:
-        if self.__elevator_status is status.ElevatorStatus.STOPPED:        
+        if self.__elevator_status != status.Elevator.STOPPED:        
             self.__elevator_door_status = status.Door.OPENING
             self.__elevator_door_status = status.Door.OPENED
 
     def call_elevator(self, floor_number: int) -> None:
-        self.__floors.insert(floor_number, floor_number)
+        self.__floors.append(floor_number)
+
+    def move(self) -> None:
+        check_floor = 0
+        if len(self.__floors) > 1:
+            check_floor = len(self.__floors) - 1
+
+        if self.__current_floor >= self.__floors[check_floor]:
+            self.__current_direction = status.Elevator.MOVING_DOWN
+            self.__current_floor -= 1
+
+            for floor in self.__floors:
+                if floor == self.__current_floor:
+                    self.__floors.remove(floor)
+                    self.open_doors()
+                    self.close_doors()
+        
+        else:
+            self.__current_direction = status.Elevator.MOVING_UP
+            self.__current_floor += 1
+
+            for floor in self.__floors:
+                if floor == self.__current_floor:
+                    self.__floors.remove(floor)
+                    self.open_doors()
+                    self.close_doors()
