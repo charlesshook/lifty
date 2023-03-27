@@ -44,7 +44,7 @@ class Elevator:
         self.__elevator_door_status = status.Door.CLOSED
 
     def open_doors(self) -> None:
-        if self.__elevator_status == status.Elevator.STOPPED:        
+        if self.__elevator_status == status.Elevator.STOPPED:                
             self.__elevator_door_status = status.Door.OPENING
             self.__elevator_door_status = status.Door.OPENED
 
